@@ -10,7 +10,6 @@ async function signin(body) {
     if (user) {
         const isValid = await bcrypt.compare(body.password, user.password);
         if (isValid) {
-            console.log('password....', )
             const token = jwt.sign({ data: body.userName }, config.jwtKey, {
                 expiresIn: config.jwtExpirySeconds
             });

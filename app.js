@@ -3,14 +3,18 @@ const path = require('path'),
     bodyParser = require('body-parser'),
     mongoose = require('mongoose'),
     cors = require('cors'),
-    { authRoute, productRoute, authJWT } = require(path.join(__dirname, 'routes')),
+    { authRoute, productRoute, authJWT,cartRoute, adminRoute,orderRoute, userRoute} = require(path.join(__dirname, 'routes'));
     app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use('/auth', authRoute);
 app.use(authJWT.verifyToken);
 app.use('/products',productRoute);
-// app.use('/orders', orderRoutes);
+app.use('/cart', cartRoute);
+app.use('/admin', adminRoute);
+app.use('/order',orderRoute);
+app.use('/user', userRoute);
+app.use('/add-shipping-info', userRoute);
 
 mongoose.connect('mongodb+srv://admin123:admin123@onlineshopping-igy6l.mongodb.net/onlineshopping?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
