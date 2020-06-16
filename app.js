@@ -9,10 +9,10 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use('/auth', authRoute);
 app.use(authJWT.verifyToken);
-app.use('/products', productRoute);
+app.use('/products',productRoute);
 // app.use('/orders', orderRoutes);
 
-mongoose.connect('mongodb://localhost:27017/onlineshopping', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb+srv://admin123:admin123@onlineshopping-igy6l.mongodb.net/onlineshopping?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         app.listen(3000, () => {
             console.log('Running on 3000');

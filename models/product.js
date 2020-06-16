@@ -6,22 +6,27 @@ const productSchema = new Schema({
         type: String,
         required: true
     },
+   
     imageURL: {
         type: String
-
     },
+    quantity : Number,
+
     price: Number,
+    
     description: String,
 
     sellerId: {
         type: mongoose.Types.ObjectId,
         ref: 'User'
     },
-
+    approved: {
+        type: Boolean,
+       // required: true
+    },
     Review: [{
         reviewContent: {
             type: String
-
         },
         reviewedBy: {
             type: mongoose.Types.ObjectId,
@@ -29,7 +34,6 @@ const productSchema = new Schema({
         },
         reviewStatus: {
             type: Boolean
-
         },
         rating: {
             type: Number

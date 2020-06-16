@@ -1,6 +1,7 @@
 const mongoose = require('mongoose'),
     path = require('path'),
-    { Product } = require(path.join(__dirname, 'product'));
+    Product = require(path.join(__dirname, 'product')),
+    { ApiResponse } = require(path.join(__dirname, '..', 'util'));
 
 const Schema = mongoose.Schema;
 
@@ -30,7 +31,13 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    shippingAddressId: {
+        type: mongoose.Types.ObjectId,
+        ref: 'Address'
+    },
+    
     birthDate: Date,
+    gainedPoint: Number,
     cart: {
         items: [{
             productId: {
@@ -43,61 +50,35 @@ const userSchema = new Schema({
         }],
         totalPrice: Number
     },
-    shppingAddress: {
-        country: {
-            type: String,
+    order: {
+        orderedItems: [{
+            productId: {
+                type: mongoose.Types.ObjectId,
+                ref: 'Product'
+            },
+            qty: {
+                type: Number
+            },
+            orderStatus: {
+                type: String,
 
-        },
-        city: {
-            type: String,
+            },
+            paymentId: {
+                type: mongoose.Types.ObjectId,
+                ref: 'Payment'
+            },
 
-        },
-        state: {
-            type: String,
-
-        },
-        zipAddress: {
-            type: String,
-
-        }
-
+            shippingAddressId: {
+                type: mongoose.Types.ObjectId,
+                ref: 'Address'
+            }
+           
+        }],
+        totalPrice: Number
     },
-
-    payment: {
-        cardInfo: {
-            cardeHolderName: {
-                type: String,
-
-            },
-            exparationDate: {
-                type: Date,
-
-            },
-            cardType: {
-                type: String,
-
-            }
-        },
-        billingAdress: {
-            country: {
-                type: String,
-            },
-            city: {
-                type: String,
-
-            },
-            state: {
-                type: String,
-
-            },
-            zipAddress: {
-                type: String,
-
-            }
-
-        }
-    }
+   
 });
+
 
 userSchema.methods.addToCart = async function(productId) {
     const product = await Product.findById(productId);

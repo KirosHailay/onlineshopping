@@ -2,17 +2,15 @@ const app = require('express');
 const path = require('path');
 const router = app.Router(),
     { productController } = require(path.join(__dirname, '..', 'controllers')),
+    {sellerAuthorization , buyerAuthorization} = require('./authorization')
 
-    {
-        sellerAuthorization
+router.get('/', sellerAuthorization, productController.getAllProducts);
+router.get('/approved-products',buyerAuthorization, productController.getAllProducts )
+router.post('/add-product', sellerAuthorization, productController.addProduct);
+router.get('/:prodId', sellerAuthorization, productController.getProductById);
+router.put('/edit-product',sellerAuthorization, productController.updateProduct);
+router.delete('/delete-product/:prodId/:qty', sellerAuthorization, productController.deleteProduct);
+router.get('/reviews/:prodId', productController.getProductReview);
+router.post('/reviews', buyerAuthorization, productController.addProductReview);
 
-    } = require('./authorization');
-
-// router.get('/', sellerController.getAllProducts);
-router.post('/', sellerAuthorization, productController.addProduct);
-// router.put('/:prodId', sellerAuthorization, sellerController.updateProductpost);
-// router.delete('/:prodId', sellerController.deleteProduct);
-
-
-
-module.exports = router;
+module.exports = router; 
