@@ -1,5 +1,10 @@
 const path = require('path'),
-    authService = require(path.join(__dirname, 'auth'));
+    orderService = require(path.join(__dirname, 'order')),
+    authService = require(path.join(__dirname, 'auth')),
+    userService = require(path.join(__dirname, 'user'));
 module.exports = {
-    authService
+    authService,
+    orderService,
+    userService
+    
 }

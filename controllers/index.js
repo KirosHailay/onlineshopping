@@ -1,8 +1,10 @@
 const path = require('path'),
     authController = require(path.join(__dirname, 'auth')),
-    productController = require(path.join(__dirname, 'product'))
+    orderController = require(path.join(__dirname, 'order')),
+    userController = require(path.join(__dirname, 'user'));
 
 module.exports = {
     authController,
-    productController
+    orderController,
+    userController
 }
