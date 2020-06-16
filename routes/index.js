@@ -2,12 +2,14 @@ const path = require('path'),
     authRoute = require(path.join(__dirname, 'auth')),
     productRoute = require(path.join(__dirname, 'product')),
     { authJWT } = require(path.join(__dirname, 'middleware')),
-    cartRoute = require(path.join(__dirname, 'cart'))
+    cartRoute = require(path.join(__dirname, 'cart')),
+    adminRoute = require(path.join(__dirname, 'admin'))
     
 
 module.exports = {
     authRoute,
     productRoute,
     authJWT,
-    cartRoute
+    cartRoute,
+    adminRoute
 }
