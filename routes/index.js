@@ -5,7 +5,7 @@ const path = require('path'),
     cartRoute = require(path.join(__dirname, 'cart')),
     adminRoute = require(path.join(__dirname, 'admin')),
     orderRoute = require(path.join(__dirname, 'order')),
-    userRoute = require(path.join(__dirname, 'user')),
+    userRoute = require(path.join(__dirname, 'user'))
     
 
 module.exports = {
