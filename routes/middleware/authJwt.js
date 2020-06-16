@@ -17,7 +17,6 @@ exports.verifyToken = (req, res, next) => {
         if (err) {
             return res.status(401).send(new ApiResponse(401, 'error', { err: 'Unauthorized!' }));
         }
-        console.log('docoded...', decoded)
         const user = await User.findOne({ userName: decoded.data })
         if (user) {
             req.user = user;

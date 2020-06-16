@@ -1,5 +1,3 @@
-const { UV_FS_O_FILEMAP } = require('constants');
-const { privateDecrypt } = require('crypto');
 
 const
 mongoose = require('mongoose'),
@@ -39,10 +37,7 @@ async function addToCart(request) {
         const savedUser = await user.save();
         if(savedUser) {
             return new ApiResponse(200, 'success', {user: savedUser});
-        }
-       
-        
-    }
+      }
     return new ApiResponse(500, 'error', {err: 'unable to add to the cart'});
 }
 

@@ -3,7 +3,9 @@ const path = require('path'),
     productRoute = require(path.join(__dirname, 'product')),
     { authJWT } = require(path.join(__dirname, 'middleware')),
     cartRoute = require(path.join(__dirname, 'cart')),
-    adminRoute = require(path.join(__dirname, 'admin'))
+    adminRoute = require(path.join(__dirname, 'admin')),
+    orderRoute = require(path.join(__dirname, 'order')),
+    userRoute = require(path.join(__dirname, 'user')),
     
 
 module.exports = {
@@ -11,5 +13,7 @@ module.exports = {
     productRoute,
     authJWT,
     cartRoute,
-    adminRoute
+    adminRoute,
+    orderRoute,
+    userRoute
 }
