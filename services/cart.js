@@ -38,7 +38,9 @@ async function addToCart(request) {
         if(savedUser) {
             return new ApiResponse(200, 'success', {user: savedUser});
       }
+    }
     return new ApiResponse(500, 'error', {err: 'unable to add to the cart'});
+
 }
 
 async function removeFromCart(request){
