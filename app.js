@@ -3,12 +3,14 @@ const path = require('path'),
     bodyParser = require('body-parser'),
     mongoose = require('mongoose'),
     cors = require('cors'),
-    { authRoute, authJWT,orderRoute, userRoute} = require(path.join(__dirname, 'routes')),
+    { authRoute, productRoute, authJWT,cartRoute, adminRoute,orderRoute, userRoute} = require(path.join(__dirname, 'routes'));
     app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use('/auth', authRoute);
 app.use(authJWT.verifyToken);
+app.use('/cart', cartRoute);
+app.use('/admin', adminRoute);
 app.use('/order',orderRoute);
 app.use('/user', userRoute);
 app.use('/add-shipping-info', userRoute);
