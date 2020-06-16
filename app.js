@@ -9,6 +9,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use('/auth', authRoute);
 app.use(authJWT.verifyToken);
+app.use('/products',productRoute);
 app.use('/cart', cartRoute);
 app.use('/admin', adminRoute);
 app.use('/order',orderRoute);

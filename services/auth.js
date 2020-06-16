@@ -29,6 +29,7 @@ async function signup(user) {
     if (u) return new ApiResponse(401, "error", { err: "Username alaready taken" });
 
     const salt = await bcrypt.genSalt(10);
+    console.log(user.password);
     const hashedPassword = await bcrypt.hash(user.password, salt);
 
     const uu = new User({

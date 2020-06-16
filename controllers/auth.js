@@ -16,9 +16,9 @@ exports.signin = async(req, res, next) => {
 exports.signup = async(req, res, next) => {
     try {
         let response = await authService.signup(req.body);
-
         res.status(response.status).json(response);
     } catch (err) {
+        console.log("new error" , err)
         res.status(500).json(new ApiResponse(500, 'error', err));
     }
 }
