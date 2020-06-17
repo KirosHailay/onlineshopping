@@ -9,7 +9,7 @@ path = require('path'),
 
 async function getUnapprovedProducts(){
     const products= await Product.find({approved:false});
-    return new ApiResponse(200, 'success', {products : products})
+    return new ApiResponse(200, 'success',  products)
 }
 
 async function approveProduct(request){

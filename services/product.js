@@ -102,7 +102,7 @@ async function addProductReview(req){
 
 async function removeProduct(prodId){
     const product =  await Product.deleteOne(prodId);
-    return new ApiResponse(200, 'success', { removed: product});
+    return new ApiResponse(200, 'success', product);
 }
 
 
