@@ -74,3 +74,13 @@ exports.addProductReview = async(req, res, next)=>{
     }
 }
 
+exports.removeProduct = async(req, res, next)=>{
+    try{ 
+        const response= await productService.removeProduct(req.params.prodId);
+        res.status(response.status).send(response);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(new ApiResponse(500, 'error', err));
+    }
+}
+

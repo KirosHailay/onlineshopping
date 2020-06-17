@@ -6,12 +6,10 @@ jwt = require('jsonwebtoken');
 
 exports.verifyToken = (req, res, next) => {
 
-    const authHeader = req.headers['authorization'];
-    if (!authHeader) {
+    const token = req.headers['token'];
+    if (!token) {
         return res.status(403).send(new ApiResponse(403, 'error', { err: 'No Token Provided!' }));
     }
-    const token = authHeader.split(' ')[1];
-
 
     jwt.verify(token, config.jwtKey, async(err, decoded) => {
         if (err) {
@@ -21,6 +19,7 @@ exports.verifyToken = (req, res, next) => {
         if (user) {
             req.user = user;
         }
+    
         next();
     });
 }

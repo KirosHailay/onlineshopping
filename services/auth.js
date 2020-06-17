@@ -5,7 +5,6 @@ const path = require('path'),
     jwt = require('jsonwebtoken');
 
 async function signin(body) {
-    console.log(config)
     const user = await User.findOne({ userName: body.userName });
     if (user) {
         const isValid = await bcrypt.compare(body.password, user.password);
@@ -15,18 +14,18 @@ async function signin(body) {
             });
             return new ApiResponse(200, 'success', { token: token, expiresIn: config.jwtExpirySeconds, user: user });
         } else {
-            return new ApiResponse(401, 'error', { err: 'username or password not exist' });
+            return new ApiResponse(401, 'error', { err: 'userName or password not exist' });
         }
 
     } else {
-        return new ApiResponse(401, 'error', { err: 'username or password not exist' });
+        return new ApiResponse(401, 'error', { err: 'userName or password not exist' });
     }
 }
 
 
 async function signup(user) {
     const u = await User.findOne({ userName: user.userName });
-    if (u) return new ApiResponse(401, "error", { err: "Username alaready taken" });
+    if (u) return new ApiResponse(401, "error", { err: "userName alaready taken" });
 
     const salt = await bcrypt.genSalt(10);
     console.log(user.password);
@@ -37,12 +36,13 @@ async function signup(user) {
         lastName: user.lastName,
         userName: user.userName,
         email: user.email,
+        gainedPoint: 0,
         birthdate: user.birthdate,
         role: user.role,
         password: hashedPassword
     });
-    await uu.save()
-    return new ApiResponse(200, "success", {});
+    const ui  = await uu.save()
+    return new ApiResponse(200, "success", ui);
 
 }
 

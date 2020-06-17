@@ -13,7 +13,7 @@ const path = require('path'),
         }
         user.shippingAddress.push(shippingAdress);
         const u = await user.save();
-        return new ApiResponse(200, 'success', {user: u});
+        return new ApiResponse(200, 'success', u);
     }
 
     async function addShippingInfo(req) {
@@ -37,8 +37,21 @@ const path = require('path'),
         const user = req.user;
         user.billingInfo.push(paymentInfo);
         const u = await user.save();
-        return new ApiResponse(200, 'success', {user: u});
+        return new ApiResponse(200, 'success',  u);
         
+    }
+    
+    async function gainPoint(buyerId, overAllPayment) {
+        const user = await User.findOne({_id: buyerId});
+        if(user) {
+            const point = overAllPayment * 0.001;
+            user.gainPoint +=  point;
+            const u = await user.save();
+            return u;
+        }
+        else {
+            return new ApiResponse(403, 'error', {err: 'No point added'});
+        }
     }
 
     module.exports = {

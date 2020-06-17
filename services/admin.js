@@ -19,7 +19,7 @@ async function approveProduct(request){
             product.approved=true;
             const savedProd= await product.save();
             if(savedProd){
-                return new ApiResponse(200, 'success', {savedProd: savedProd});
+                return new ApiResponse(200, 'success', savedProd);
         }
         }
         else{
@@ -33,7 +33,7 @@ async function getUnaprovedReviews(prodId){
     const product= await Product.findById(prodId);
     const reviews= product.Review;
     const unaprovedReviews= reviews.filter(review => review.reviewStatus===false);
-    return new ApiResponse(200, 'success', {unaprovedReviews : unaprovedReviews });
+    return new ApiResponse(200, 'success', unaprovedReviews );
 
 }
 
@@ -52,7 +52,7 @@ async function approveReview(request){
 
     const savedProd= await product.save();
     if(savedProd){
-            return new ApiResponse(200, 'success', {product : review });
+            return new ApiResponse(200, 'success', review );
         }
 
     return new ApiResponse(500, 'error', {err: 'unable to approve'});

@@ -9,13 +9,11 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use('/auth', authRoute);
 app.use(authJWT.verifyToken);
-app.use('/products',productRoute);
+app.use('/products', productRoute);
 app.use('/cart', cartRoute);
 app.use('/admin', adminRoute);
-app.use('/order',orderRoute);
-app.use('/user', userRoute);
-app.use('/add-shipping-info', userRoute);
-
+app.use('/orders',orderRoute);
+app.use('/users', userRoute);
 mongoose.connect('mongodb+srv://admin123:admin123@onlineshopping-igy6l.mongodb.net/onlineshopping?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         app.listen(3000, () => {

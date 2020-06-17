@@ -12,7 +12,7 @@ async function getCart(request) {
     // console.log("user.."+ user);
     const cart= user.cart;
     console.log("This is the cart.."+ cart);
-    return new ApiResponse(200, 'success', {cart: cart})
+    return new ApiResponse(200, 'success', cart)
 } 
 
 
@@ -36,7 +36,7 @@ async function addToCart(request) {
         cart.totalPrice += product.price;
         const savedUser = await user.save();
         if(savedUser) {
-            return new ApiResponse(200, 'success', {user: savedUser});
+            return new ApiResponse(200, 'success', savedUser);
       }
     }
     return new ApiResponse(500, 'error', {err: 'unable to add to the cart'});
@@ -57,7 +57,7 @@ async function removeFromCart(request){
             const savedUser= await user.save();
             console.log(savedUser);
             if(savedUser){
-                return new  ApiResponse(200, 'success',{user: savedUser});
+                return new  ApiResponse(200, 'success', savedUser);
             }
         }
 
