@@ -3,9 +3,9 @@ const path = require('path'),
     {  userService } = require(path.join(__dirname, '..', 'services'));
 
 
-    exports.addAddress = async (req, res, next) => {
+    exports.addShippingInfo = async (req, res, next) => {
         try {
-            const response = await userService.addAddress(req);
+            const response = await userService.addShippingInfo(req);
             res.status(response.status).send(response)
         } catch(err) {
             console.log(err)
@@ -13,9 +13,9 @@ const path = require('path'),
         }
     }
 
-    exports.addShippingInfo = async(req, res, next) => {
+    exports.addBillingInfo = async(req, res, next) => {
         try {
-            const response = await userService.addShippingInfo(req);
+            const response = await userService.addBillingInfo(req);
             res.status(response.status).send(response)
         } catch(err) {
             console.log(err)

@@ -2,7 +2,7 @@ const path = require('path'),
     { User } = require(path.join(__dirname, '..', 'models')),
     { ApiResponse, config } = require(path.join(__dirname, '..', 'util'));
 
-    async function addAddress(req) {
+    async function addShippingInfo(req) {
         const user = req.user;
 
         const shippingAdress = {
@@ -16,7 +16,7 @@ const path = require('path'),
         return new ApiResponse(200, 'success', u);
     }
 
-    async function addShippingInfo(req) {
+    async function addBillingInfo(req) {
         const cardInfo = {
             cardHolderName: req.body.cardHolderName,
             exparationDate: req.body.exparationDate,
@@ -55,6 +55,7 @@ const path = require('path'),
     }
 
     module.exports = {
-        addAddress,
-        addShippingInfo
+        addShippingInfo,
+        addBillingInfo,
+        gainPoint
     }
