@@ -6,7 +6,6 @@ const path = require('path'),
 
 exports.getUnapprovedProducts = async(req, res, next) =>{
     console.log('here');
-
     try {
         const response = await adminService.getUnapprovedProducts();
         res.status(response.status).json(response);
@@ -48,4 +47,25 @@ exports.approveReview = async(req, res, next) =>{
         res.status(500).json(new ApiResponse(500, 'error', err));
     }
 
+}
+
+exports.getProductById = async(req,res,next) => {
+    try{ 
+        const response= await adminService.getProductById(req.params.prodId);
+        res.status(response.status).send(response);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(new ApiResponse(500, 'error', err));
+    }
+}
+
+
+exports.getReview= async(req,res,next) =>{
+    try{ 
+        const response= await adminService.getReview(req.params.prodId, req.params.revId);
+        res.status(response.status).send(response);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(new ApiResponse(500, 'error', err));
+    }
 }
