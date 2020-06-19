@@ -61,7 +61,6 @@ async function approveReview(request) {
 async function getReview(prodId, reviewId) {
     const product = await Product.findById(prodId);
     const reviews = product.Review;
-    console.log("REVIEWSSSSSSS", reviews)
     const unaprovedReview = reviews.filter(review => review._id.equals(reviewId));
     const review = unaprovedReview[0];
     product.Review.forEach(rev => {
@@ -72,12 +71,11 @@ async function getReview(prodId, reviewId) {
     if (review) {
         return new ApiResponse(200, 'success', review);
     }
-
     return new ApiResponse(500, 'error', { err: 'unable to approve' });
 }
 
-async function getProductById(prodId) {
-    const product = await Product.findById(prodId);
+async function getProductById(prodId){
+   const product =  await Product.findById(prodId);
     return new ApiResponse(200, 'success', product);
 }
 
