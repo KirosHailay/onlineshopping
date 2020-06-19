@@ -35,6 +35,10 @@ const orderSchema = new Schema({
 
             },
             paymentFromCard: Number,
+            orderPlacedDate: Date,
+            shippedDate: Date,
+            cancelDate: Date,
+            DeliveredDate: Date,
             cuponPayment: Number,
             overAllPayment: Number,
             shippingAddress:{

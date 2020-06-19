@@ -12,30 +12,47 @@ const
 
 
 async function placeOrder(request) {
-    console.log('here')
+   
+    
+    console.log('the request body is ...', request.body.shippingAddress)
+    console.log('here');
     let gainPoint;
     const user = request.user;
     const u = await user.populate('cart.items.productId').execPopulate();
     const cart = u.cart.items;
+    // getting the selected shipping address
+    const address = u.shippingAddress.filter(shipadd => shipadd._id.equals(request.body.shippingAddress));
+    const shippingAdd = address[0];
+    // getting the selected billing address
+    const billInfo = u.billingInfo.filter(bill => bill._id.equals(request.body.paymentMethod));
+    const billInfos = billInfo[0];
+    console.log(billInfos.cardInfo.cardHolderName)
+    console.log(billInfos.billingAddress.country, "the back ward way....");
+    if(cart.length === 0) {
+        console.log(new Date())
+        return new ApiResponse(403, 'error', {err: "you don't have any thing in you cart"});
+        
+    }
     const map = new HashMap();
+    const unaprovedReview = u.shippingAddress.filter(shipadd => shipadd._id.equals(request.body.shippingAddress));
     let ordered;
     const shippingAdress = {
-        country: u.shippingAddress[0].country,
-        city: u.shippingAddress[0].city,
-        state: u.shippingAddress[0].state,
-        zipAddress: u.shippingAddress[0].zipAddress
+        country: shippingAdd.country,
+        city: shippingAdd.city,
+        state: shippingAdd.state,
+        zipAddress: shippingAdd.zipAddress
     }
     const billingAddress = {
-        country: u.billingInfo[0].billingAddress.country,
-        city: u.billingInfo[0].billingAddress.city,
-        state: u.billingInfo[0].billingAddress.state,
-        zipAddress: u.billingInfo[0].billingAddress.AdresszipAddress
+        country: billInfos.billingAddress.country,
+        city: billInfos.billingAddress.city,
+        state: billInfos.billingAddress.state,
+        zipAddress: billInfos.billingAddress.AdresszipAddress
     }
     const cardInfo = {
-        cardHolderName: u.billingInfo[0].cardInfo.cardHolderName,
-        exparationDate: u.billingInfo[0].cardInfo.exparationDate,
-        cardType: u.billingInfo[0].cardInfo.cardType,
-        cardCode: u.billingInfo[0].cardInfo.cardCode
+        cardHolderName: billInfos.cardInfo.cardHolderName,
+        exparationDate: billInfos.cardInfo.exparationDate,
+        cardType: billInfos.cardInfo.cardType,
+        cardCode: billInfos.cardInfo.cardCode
     }
 
     const paymentInfos = {
@@ -62,12 +79,16 @@ async function placeOrder(request) {
         map.get(sellerId).push(productsInfo);
     }
 
-    if(!u.gainPoint) {
+    if(!u.gainPoint && request.body.useCupon === 'no') {
         gainPoint = 0;
     }
-    else{
+    else if(u.gainPoint && request.body.useCupon === 'yes') {
         gainPoint = u.gainPoint
     }
+    else {
+        gainPoint = 0;
+    }
+    
    
     map.forEach( async (value, key) => {
           const order = new Order ({
@@ -79,7 +100,8 @@ async function placeOrder(request) {
              paymentFromCard: totalPrice - gainPoint,
              overAllPayment: totalPrice,
              shippingAddress: shippingAdress,
-             billingInfo: paymentInfos
+             billingInfo: paymentInfos,
+             orderPlacedDate: new Date()
              
          })
          await order.save();
@@ -109,17 +131,26 @@ async function changeOrderStatus(request) {
         console.log('hello')
         if(order.orderStatus === 'orderPlaced'  && neworderStatus ==='Shipped') {
             order.orderStatus = neworderStatus;
+            order.shippedDate = new Date();
             const o = await order.save();
             return new ApiResponse(200, 'success',  o);
         }
     
         else if(order.orderStatus === 'Shipped' && neworderStatus === 'Deliverd') {
             order.orderStatus = neworderStatus;
+            order.DeliveredDate = new Date();
             const o = await order.save();
             if(o) {
-                const u = await userService.gainPoint(order.buyerId, order.overAllPayment);
+                const u = await User.findOne({_id: o.buyerId});
                 if(u) {
-                    return new ApiResponse(200, 'success', o);
+                    console.log("yeah ea");
+                    const point = o.overAllPayment * 0.001;
+                    console.log('his current gain point', u.gainedPoint);
+                    u.gainedPoint += point;
+                    const ui = await u.save();
+                    if(ui) {
+                        return new ApiResponse(200, 'success', o);
+                    }
                 }
                
             }
@@ -141,6 +172,7 @@ async function cancelOrder(request) {
     if(order) {
         if(order.orderStatus === 'orderPlaced') {
             order.orderStatus = 'Cancelled';
+            order.cancelDate = new Date();
             const o = await order.save();
             return new ApiResponse(200, 'success',  o);
         }

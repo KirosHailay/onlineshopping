@@ -43,10 +43,13 @@ const path = require('path'),
     
     async function gainPoint(buyerId, overAllPayment) {
         const user = await User.findOne({_id: buyerId});
+        console.log('inside gainpoint method');
         if(user) {
+            console.log(u);
             const point = overAllPayment * 0.001;
             user.gainPoint +=  point;
             const u = await user.save();
+            console.log('new userrr.....', u)
             return u;
         }
         else {
