@@ -12,6 +12,8 @@ router.get('/', buyerAuthorization, cartController.getCart);
 router.post('/add-to-cart', buyerAuthorization, cartController.addToCart);
 
 router.post('/remove-from-cart', buyerAuthorization, cartController.removeFromCart);
+router.get('/:prodId', buyerAuthorization, cartController.getProductById);
+
 
 // router. put('/edit-cart', buyerAuthorization, cartController.editInCart);
 

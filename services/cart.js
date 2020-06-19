@@ -10,9 +10,14 @@ path = require('path'),
 async function getCart(request) {
     const user= request.user;
     // console.log("user.."+ user);
-    const cart= user.cart;
-    console.log("This is the cart.."+ cart);
-    return new ApiResponse(200, 'success', cart)
+    const u = await User.findById({_id: user._id}).populate('cart.items.productId').exec();
+    if(u) {
+        const cart= u.cart;
+        console.log("This is the cart.."+ cart);
+        return new ApiResponse(200, 'success', cart)
+    }
+    return new ApiResponse(403, 'error', {err: 'error'});
+    
 } 
 
 
@@ -47,7 +52,9 @@ async function removeFromCart(request){
     const user  = request.user;
     const cart = user.cart;
     const product = await Product.findById(request.body.prodId);
+
     if(product){
+        
         const isExisting = cart.items.findIndex(objInItems => new String(objInItems.productId).trim() == new String(product._id).trim());
         if(isExisting >=0){
             const quantity= cart.items[isExisting].qty;
@@ -66,4 +73,9 @@ async function removeFromCart(request){
 
 }
 
-module.exports = {getCart, addToCart, removeFromCart };
+async function getProductById(prodId){
+    const product =  await Product.findById(prodId);
+     return new ApiResponse(200, 'success', product);
+ }
+
+module.exports = {getCart, addToCart, removeFromCart, getProductById };

@@ -2,6 +2,15 @@ const path = require('path'),
     { cartService } = require(path.join(__dirname, '..', 'services')),
     { ApiResponse } = require(path.join(__dirname, '..', 'util'))
 
+    exports.getProductById = async(req,res,next) => {
+        try{ 
+            const response= await cartService.getProductById(req.params.prodId);
+            res.status(response.status).send(response);
+        } catch (err) {
+            console.log(err);
+            res.status(500).json(new ApiResponse(500, 'error', err));
+        }
+    }
     exports.getCart = async (req, res, next) => {
         try {
             const response = await cartService.getCart(req);
