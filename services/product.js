@@ -51,8 +51,10 @@ async function getProductById(prodId){
 
 async function updateProduct(req){
     const body = req.body;
-    const oldProduct =  await Product.findById(body._id);
-
+    console.log("the req body", body)
+    const oldProduct =  await Product.findOne({_id: body.id});
+    if(oldProduct) {
+        console.log("title", oldProduct.title)
         oldProduct.title = body.title;
         oldProduct.imageURL = body.imageURL;
         oldProduct.price = body.price; 
@@ -61,6 +63,8 @@ async function updateProduct(req){
         oldProduct.sellerId = req.user._id;
        await oldProduct.save();
        return new ApiResponse(200, 'success', oldProduct);
+    }
+     
     }
 
 
