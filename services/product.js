@@ -1,3 +1,4 @@
+
 const { json } = require('body-parser');
 const e = require('express');
 
@@ -9,11 +10,11 @@ const path = require('path'),
 async function getAllProducts(req){
     if(req.user.role === 'seller'){
         const products = await Product.find({sellerId: req.user._id});
-        return new ApiResponse(200, 'success', { products: products });
+        return new ApiResponse(200, 'success', products);
     } 
     if(req.user.role === 'buyer'){
      const product = await Product.find({approved : true});
-     return new ApiResponse(200, 'success', { products: product });
+     return new ApiResponse(200, 'success', product );
     }
 }
 
@@ -25,7 +26,7 @@ async function addProduct(req){
     if(product){
         product.quantity = parseInt(product.quantity) + parseInt(body.quantity);
         await product.save();
-        return new ApiResponse(200, 'success', { prod: product });
+        return new ApiResponse(200, 'success',  product);
     }
   else{ 
     const prod = new Product({
@@ -38,20 +39,20 @@ async function addProduct(req){
         approved : false
        })
     await prod.save();
-    return new ApiResponse(200, 'success', { prod: prod });
+    return new ApiResponse(200, 'success',  prod );
   }
 }
 
 
 async function getProductById(prodId){
    const product =  await Product.findById(prodId);
-    return new ApiResponse(200, 'success', { product: product });
+    return new ApiResponse(200, 'success', product);
 }
 
 async function updateProduct(req){
     const body = req.body;
-    const oldProduct =  await Product.findById(body._id);
-
+    const oldProduct =  await Product.findOne({_id: body.id});
+    if(oldProduct) {
         oldProduct.title = body.title;
         oldProduct.imageURL = body.imageURL;
         oldProduct.price = body.price; 
@@ -59,7 +60,9 @@ async function updateProduct(req){
         oldProduct.description = body.description;
         oldProduct.sellerId = req.user._id;
        await oldProduct.save();
-       return new ApiResponse(200, 'success', { oldProduct: oldProduct });
+       return new ApiResponse(200, 'success', oldProduct);
+    }
+     
     }
 
 
@@ -76,13 +79,13 @@ async function deleteProduct(prodId, qty){
     else{
     await Product.deleteOne({_id : prodId});
     }
-    return new ApiResponse(200, 'success', { deletedProduct: product });
+    return new ApiResponse(200, 'success',  product);
 }
 
 
 async function getProductReview(prodId){
     const product =  await Product.findById(prodId);
-    return new ApiResponse(200, 'success', { review: product.review });
+    return new ApiResponse(200, 'success', product.review);
 }
 
 
@@ -96,8 +99,14 @@ async function addProductReview(req){
        rating : body.rating }
     product.Review.push(newReview);
      await product.save();
-    return new ApiResponse(200, 'success', { newReview:newReview});
+    return new ApiResponse(200, 'success', newReview);
 }
+
+async function removeProduct(prodId){
+    const product =  await Product.deleteOne(prodId);
+    return new ApiResponse(200, 'success', product);
+}
+
 
 module.exports = {getAllProducts ,
                   addProduct, 
@@ -105,5 +114,7 @@ module.exports = {getAllProducts ,
                   updateProduct, 
                   deleteProduct,
                   getProductReview,
-                  addProductReview
+                  addProductReview,
+                  removeProduct
                 };
+
