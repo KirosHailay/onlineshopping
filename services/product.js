@@ -105,7 +105,7 @@ async function addProductReview(req){
 }
 
 async function removeProduct(prodId){
-    const product =  await Product.deleteOne(prodId);
+    const product =  await Product.deleteOne({_id: prodId});
     return new ApiResponse(200, 'success', product);
 }
 

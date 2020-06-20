@@ -7,10 +7,10 @@ const router = app.Router(),
 
 router.get('/', sellerAuthorization, productController.getAllProducts);
 router.get('/approved-products',buyerAuthorization, productController.getAllProducts )
-router.post('/add-product', sellerAuthorization, productController.addProduct);
+router.post('/', sellerAuthorization, productController.addProduct);
 router.get('/:prodId', productController.getProductById);
 router.put('/edit-product',sellerAuthorization, productController.updateProduct);
-router.delete('/delete-product/:prodId/:qty', sellerAuthorization, productController.deleteProduct);
+//router.delete('/delete-product/:prodId/:qty', sellerAuthorization, productController.deleteProduct);
 router.get('/reviews/:prodId', productController.getProductReview);
 router.post('/reviews', buyerAuthorization, productController.addProductReview);
 router.delete('/delete/:prodId' , sellerAuthorization, productController.removeProduct);
